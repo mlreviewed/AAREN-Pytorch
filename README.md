@@ -5,6 +5,10 @@
 ### ![CARNN drawio](https://github.com/user-attachments/assets/b39670d7-6bd2-428d-8530-519f03499e41)
 ### 
 
+## Usage:
+### Import the .so file
+### Monkey patch your attention
+
 ## Features (WIP):
 ### 
 ### 1. Plug and Play AAREN Layer
