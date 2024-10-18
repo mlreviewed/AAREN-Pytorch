@@ -20,12 +20,25 @@ import aaren_cuda
 class AARENLayer(nn.Module):
     def __init__(self, vocab_size, embedding_dim=1024, query_dim=1024):
         super(AARENLayer, self).__init__()
-
+        
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
-        self.query_vector = nn.Parameter(torch.randn(1, query_dim))  # Trainable Q
+        self.query_vector = nn.Parameter(torch.empty(1, query_dim)) # Trainable Q
+        
         self.key_layer = nn.Linear(embedding_dim, query_dim)  # Linear layer for K
         self.value_layer = nn.Linear(embedding_dim, query_dim)  # Linear layer for V
 
+        self._init()
+    
+    def _init(self):
+        # Initialize query_vector
+        nn.init.xavier_uniform_(self.query_vector)
+        
+        # List of linear layers
+        for layer in [self.key_layer, self.value_layer]:
+            nn.init.xavier_uniform_(layer.weight)
+            if layer.bias is not None:  # Check if there's a bias
+                nn.init.zeros_(layer.bias)
+        
     def forward(self, input_ids, attention_mask=None):
 
         # Embed input IDs
